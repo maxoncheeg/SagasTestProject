@@ -1,0 +1,5 @@
+C:\Users\maksg\Desktop\CODING\MY AMAZING PROJECTS\SITES\SagasTestProject\SagasTestProject\SagasTestProject.ItemsService\obj\Debug\net7.0\SagasTestProject.ItemsService.csproj.AssemblyReference.cache
+C:\Users\maksg\Desktop\CODING\MY AMAZING PROJECTS\SITES\SagasTestProject\SagasTestProject\SagasTestProject.ItemsService\obj\Debug\net7.0\SagasTestProject.ItemsService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\maksg\Desktop\CODING\MY AMAZING PROJECTS\SITES\SagasTestProject\SagasTestProject\SagasTestProject.ItemsService\obj\Debug\net7.0\SagasTestProject.ItemsService.AssemblyInfoInputs.cache
+C:\Users\maksg\Desktop\CODING\MY AMAZING PROJECTS\SITES\SagasTestProject\SagasTestProject\SagasTestProject.ItemsService\obj\Debug\net7.0\SagasTestProject.ItemsService.AssemblyInfo.cs
+C:\Users\maksg\Desktop\CODING\MY AMAZING PROJECTS\SITES\SagasTestProject\SagasTestProject\SagasTestProject.ItemsService\obj\Debug\net7.0\SagasTestProject.ItemsService.csproj.CoreCompileInputs.cache

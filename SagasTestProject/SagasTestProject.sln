@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SagasTestProject.TextLogSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SagasTestProject.SagasService", "SagasTestProject.SagasService\SagasTestProject.SagasService.csproj", "{EA2056D2-C00E-4AA8-95E0-235FC1BD6EA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SagasTestProject.ItemsService", "SagasTestProject.ItemsService\SagasTestProject.ItemsService.csproj", "{382F10A6-2655-4B50-A9CD-B6E87C6F153A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{EA2056D2-C00E-4AA8-95E0-235FC1BD6EA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA2056D2-C00E-4AA8-95E0-235FC1BD6EA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA2056D2-C00E-4AA8-95E0-235FC1BD6EA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{382F10A6-2655-4B50-A9CD-B6E87C6F153A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{382F10A6-2655-4B50-A9CD-B6E87C6F153A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{382F10A6-2655-4B50-A9CD-B6E87C6F153A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{382F10A6-2655-4B50-A9CD-B6E87C6F153A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
