@@ -1,4 +1,4 @@
-using GreenPipes;
+//using GreenPipes;
 using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,8 +25,7 @@ builder.Services.AddMassTransit(cfg =>
         });
         rbfc.ConfigureEndpoints(brc);
     });
-})
-    .AddMassTransitHostedService();
+});
 
 var app = builder.Build();
 

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Mvc;
 using SagasTestProject.Models;
+using SagasTestProject.SagasService.Contracts;
 using System.Diagnostics;
 
 namespace SagasTestProject.Controllers
@@ -7,10 +9,23 @@ namespace SagasTestProject.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IBus _bus;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IBus bus, ILogger<HomeController> logger)
         {
+            _bus = bus;
             _logger = logger;
+        }
+
+        public async Task<IActionResult> SagaTest()
+        {
+            var x = Guid.NewGuid();
+            var response = await _bus.Request<BuyItemsRequest, BuyItemsResponse>(new BuyItemsRequestModel
+            {
+                OrderId = x,
+            });
+            ViewBag.Result = x + " -- " + response.Message.OrderId;
+            return View("Index");
         }
 
         public IActionResult Index()
