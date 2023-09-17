@@ -1,3 +1,4 @@
+//using GreenPipes;
 using MassTransit;
 using SagasTestProject.ItemsService;
 using SagasTestProject.ItemsService.Consumers;
@@ -34,7 +35,7 @@ IHost host = Host.CreateDefaultBuilder(args)
 
                 config.ConfigureEndpoints(registration);
             });
-        }).AddMassTransitHostedService();
+        });
     })
     .Build();
 

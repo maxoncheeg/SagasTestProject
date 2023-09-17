@@ -1,5 +1,6 @@
 ﻿using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
+using SagasTestProject.SagasService.Model;
 
 namespace SagasTestProject.SagasService
 {
@@ -11,7 +12,7 @@ namespace SagasTestProject.SagasService
 
         protected override IEnumerable<ISagaClassMap> Configurations => new ISagaClassMap[]
         {
-            //new SagaStateMap();
+            new SagaStateMap()
         };
     }
 }

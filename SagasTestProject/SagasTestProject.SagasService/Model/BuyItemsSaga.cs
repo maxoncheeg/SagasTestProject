@@ -7,7 +7,7 @@ using SagasTestProject.SagasService.States;
 
 namespace SagasTestProject.SagasService.Model
 {
-    internal sealed class BuyItemsSaga : MassTransitStateMachine<BuyItemsSagaState>
+    public sealed class BuyItemsSaga : MassTransitStateMachine<BuyItemsSagaState>
     {
         private readonly ILogger<BuyItemsSaga> _logger;
 
@@ -32,20 +32,62 @@ namespace SagasTestProject.SagasService.Model
                 if (!x.TryGetPayload(out SagaConsumeContext<BuyItemsSagaState, BuyItemsRequest> payload))
                     throw new Exception("Unable to retrieve required payload for callback data.");
 
-                
+
                 x.Saga.RequestId = payload.RequestId;
                 x.Saga.ResponseAddress = payload.ResponseAddress;
 
             }).Request(GetMoney, x => x.Init<IGetMoneyRequest>(new { OrderId = x.Data.OrderId }))
            .TransitionTo(GetMoney.Pending));
+
+            During(GetMoney.Pending,
+                When(GetMoney.Completed)
+                .Request(GetItems, x => x.Init<IGetItemsRequest>(new { OrderId = x.Data.OrderId, Money = x.Data.Money }))
+                .TransitionTo(GetItems.Pending),
+
+                When(GetMoney.Faulted)
+                  .ThenAsync(async context =>
+                  {
+                      await RespondFromSaga(context, "Faulted On Get Money " + string.Join("; ", context.Data.Exceptions.Select(x => x.Message)));
+                  }).TransitionTo(Failed),
+
+                When(GetMoney.TimeoutExpired)
+                   .ThenAsync(async context =>
+                   {
+                       await RespondFromSaga(context, "Timeout Expired On Get Money");
+                   }).TransitionTo(Failed)
+             );;
+
+            During(GetItems.Pending, When(GetItems.Completed).ThenAsync(async context =>
+                  {
+                      await RespondFromSaga(context, null);
+                  })
+                .Finalize(),
+
+                When(GetItems.Faulted)
+                  .ThenAsync(async context =>
+                  {
+                      //Тут можно сделать какие-то компенсирующие действия. 
+                      //Например, вернуть деньги куда-то на счет.
+                      await RespondFromSaga(context, "Faulted On Get Items " + string.Join("; ", context.Data.Exceptions.Select(x => x.Message)));
+                  })
+                .TransitionTo(Failed),
+
+                When(GetItems.TimeoutExpired)
+                   .ThenAsync(async context =>
+                   {
+                       await RespondFromSaga(context, "Timeout Expired On Get Items");
+                   })
+                .TransitionTo(Failed));            
         }
 
         private static async Task RespondFromSaga<T>(BehaviorContext<BuyItemsSagaState, T> context, string error) where T : class
         {
             var endpoint = await context.GetSendEndpoint(context.Saga.ResponseAddress);
+
             await endpoint.Send(new BuyItemsResponse
             {
                 OrderId = context.Saga.CorrelationId,
+
                 ErrorMessage = error
             }, r => r.RequestId = context.Saga.RequestId);
         }

@@ -3,6 +3,6 @@
     public interface IGetItemsRequest
     {
         public Guid OrderId { get; }
-        public float Money { get; }
+        public float? Money { get; }
     }
 }

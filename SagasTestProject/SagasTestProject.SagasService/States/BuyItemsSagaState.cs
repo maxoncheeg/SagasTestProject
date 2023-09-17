@@ -2,7 +2,7 @@
 
 namespace SagasTestProject.SagasService.States
 {
-    internal class BuyItemsSagaState : MassTransit.SagaStateMachineInstance
+    public class BuyItemsSagaState : MassTransit.SagaStateMachineInstance
     {
         public Guid CorrelationId { get; set; }
         public string? CurrentState { get; set; }

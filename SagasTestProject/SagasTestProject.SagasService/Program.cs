@@ -1,14 +1,16 @@
 using MassTransit;
 using MassTransit.EntityFrameworkCoreIntegration;
+using Microsoft.EntityFrameworkCore;
 using SagasTestProject.SagasService;
 using SagasTestProject.SagasService.Model;
 using SagasTestProject.SagasService.States;
 using IHost = Microsoft.Extensions.Hosting.IHost;
 
 IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
+    .ConfigureServices((host, services) =>
     {
-        services.AddHostedService<Worker>();
+        //services.AddHostedService<Worker>();
+        services.AddDbContext<SagasDbContext>(option => option.UseSqlite(host.Configuration.GetConnectionString("default")));
 
         services.AddMassTransit(cfg =>
         {
@@ -20,7 +22,6 @@ IHost host = Host.CreateDefaultBuilder(args)
                     r.ConcurrencyMode = ConcurrencyMode.Pessimistic;
                     r.ExistingDbContext<SagasDbContext>();
                     r.LockStatementProvider = new SqliteLockStatementProvider();
-                    //r.LockStatementProvider = new PostgresLockStatementProvider();
                 });
             cfg.UsingRabbitMq((brc, rbfc) =>
             {
@@ -40,5 +41,11 @@ IHost host = Host.CreateDefaultBuilder(args)
         });
     })
     .Build();
+
+using (var scope = host.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<SagasDbContext>();
+    db.Database.Migrate();
+}
 
 host.Run();
