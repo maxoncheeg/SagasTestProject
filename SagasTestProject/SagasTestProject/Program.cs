@@ -1,7 +1,31 @@
+//using GreenPipes;
+using MassTransit;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddMassTransit(cfg =>
+{
+    cfg.SetKebabCaseEndpointNameFormatter();
+    cfg.AddDelayedMessageScheduler();
+    cfg.UsingRabbitMq((brc, rbfc) =>
+    {
+        rbfc.UseInMemoryOutbox();
+        rbfc.UseMessageRetry(r =>
+        {
+            r.Incremental(3, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+        });
+        rbfc.UseDelayedMessageScheduler();
+        rbfc.Host("localhost", h =>
+        {
+            h.Username("rmuser");
+            h.Password("rmpassword");
+        });
+        rbfc.ConfigureEndpoints(brc);
+    });
+});
 
 var app = builder.Build();
 
